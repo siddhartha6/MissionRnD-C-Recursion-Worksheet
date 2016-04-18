@@ -32,9 +32,47 @@ Note : Check the function Parameters ,Its a double pointer .
 
 
 #include "stdafx.h"
+#include<stdio.h>
 #include<stdlib.h>
 
+void spiralPrint(int row_start,int rows,int col_start, int cols, int **input_array,int *result,int res_index)
+{
+	int index=0;
+	if (row_start < rows && col_start < cols)
+	{
+		for (index = col_start; index < cols; index++)
+		{
+			result[res_index++] = input_array[row_start][index];
+		}
+		row_start++;
+
+		for (index = row_start; index < rows; index++)
+		    	result[res_index++] = input_array[index][cols - 1];
+		cols--;
+
+		if (row_start < rows)
+		{
+			for (index = cols - 1; index >= col_start; index--)
+			    	result[res_index++] = input_array[rows - 1][index];
+			rows--;
+		}
+
+		if (col_start < cols)
+		{
+			for (index = rows - 1; index >= row_start; index--)
+				    result[res_index++] = input_array[index][col_start];
+			col_start++;
+		}
+		spiralPrint(row_start, rows, col_start, cols, input_array, result, res_index);
+	}
+	
+}
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if (input_array == NULL || rows <= 0 || columns <= 0)
+	        return NULL;
+	int *res = (int *)malloc(rows*columns*sizeof(int));
+
+	spiralPrint(0, rows, 0, columns, input_array,res,0);
+	return res;
 }
